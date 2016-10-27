@@ -55,8 +55,23 @@ head(my_data)
 my_df <- data.frame(do.call(rbind, lapply(colnames(my_data), (function(clnm){
   values <- my_data[,clnm]
   group <- rep(clnm, nrow(my_data))
-  cbind(values, group)
+  cbind(values, group) # Note that this returns a character matrix
 }))), row.names = NULL)
+#
+#
+# Let's make sure that data are in the correct format
+# values: numeric
+# group: factor
+#
+my_df$values <- as.numeric(as.character(my_df$values))
+is.factor(my_df$group)
+#
+#
+# We can still draw a standard boxplot from here, using the "split" function
+# This is the fastestt way (but the resulting plot won't be the cutest possible)
+#
+boxplot(split(my_df$values, my_df$group),
+        col = "chartreuse4", pch = 19, ylim = c(0,120), main = "Barplot using 'split' f(x)")
 #
 #
 # Now plot a basic boxplot with ggplot2
@@ -92,7 +107,7 @@ bp
 # and adding annotation to the plot: which are the significan differences?
 # What about the p-values? Let's start with the ANOVA
 #
-my_anova <- aov(as.numeric(values)~group, data = my_df)
+my_anova <- aov(values~group, data = my_df)
 my_anova <- TukeyHSD(my_anova)
 my_anova <- data.frame(cbind(my_anova$group, 
                              make_contrast_coord(length(levels(my_df$group)))))
@@ -123,8 +138,8 @@ tiny_anova$ys <- actual.ys
 bp_ask <- bp + annotate("segment", x = tiny_anova$str, y = tiny_anova$ys, 
                     xend = tiny_anova$end, yend = tiny_anova$ys, 
                     colour = "black", size = 0.95)
-bp_val <- bp_ask + annotate("text", x = tiny_anova$ave, y = (tiny_anova$ys + margin.y) , 
-                    xend = tiny_anova$end, yend = tiny_anova$ys,
+bp_val1 <- bp_ask + annotate("text", x = tiny_anova$ave, y = (tiny_anova$ys + margin.y) , 
+                    xend = tiny_anova$end, yend = tiny_anova$ys, 
                     label = paste ("p-val =", format(round(tiny_anova$p.adj, 4), nsmall = 4)))
 bp_ask <- bp_ask + annotate("text", x = tiny_anova$ave, y = (tiny_anova$ys + (margin.y/3)) , 
                         xend = tiny_anova$end, yend = tiny_anova$ys,
