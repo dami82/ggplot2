@@ -44,7 +44,7 @@ my_data <- matrix(sapply(c(1,2.2,2.9,4.2), (function(i){ rnorm(20, 30 + (5*i), 7
                   nrow = 20,
                   ncol = 4, 
                   dimnames = list(paste("r", as.character(1:20), sep =""), c("A", "B", "C", "D")))
-boxplot(my_data, col = "darkorange", pch = 19, ylim = c(0,120), main = "Standard barplot")
+boxplot(my_data, col = "darkorange", pch = 19, ylim = c(0,120), main = "Standard boxplot")
 head(my_data)
 #
 # Critical step: convert the matrix into a data frame
@@ -71,7 +71,7 @@ is.factor(my_df$group)
 # This is the fastestt way (but the resulting plot won't be the cutest possible)
 #
 boxplot(split(my_df$values, my_df$group),
-        col = "chartreuse4", pch = 19, ylim = c(0,120), main = "Barplot using 'split' f(x)")
+        col = "chartreuse4", pch = 19, ylim = c(0,120), main = "Boxplot using 'split' f(x)")
 #
 #
 # Now plot a basic boxplot with ggplot2
