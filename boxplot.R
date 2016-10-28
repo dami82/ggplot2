@@ -1,3 +1,10 @@
+# ---------------------------------------------
+#        --- ggplot2 Tutorial Series ---
+#        ----------- BOXPLOT -----------           
+#
+# by Damiano Fantini <damiano.fantini@gmail.com>
+# ---------------------------------------------
+#
 # Load required libraries
 #
 library(ggplot2)
